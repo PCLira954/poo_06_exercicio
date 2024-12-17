@@ -1,0 +1,143 @@
+class Conta {
+    
+    private numero: string
+    private saldo: number
+
+    
+    constructor(numero: string, saldo: number) {
+        this.numero = numero
+        this.saldo = saldo
+    }
+
+    
+    public getNumero(): string {
+        return this.numero
+    }
+
+    public getSaldo(): number {
+        return this.saldo
+    }
+
+  
+    public depositar(valor: number): void {
+        this.saldo += valor
+    }
+
+
+public sacar(valor: number): void {
+        if (valor > this.saldo) {
+            console.log("Saldo insuficiente.")
+        } else {
+            this.saldo -= valor
+        }
+    }
+}
+
+class Cliente {
+    
+    private nome: string
+    private cpf: string
+
+    
+    constructor(nome: string, cpf: string) {
+        this.nome = nome
+        this.cpf = cpf
+    }
+
+    
+    public getNome(): string {
+        return this.nome
+    }
+
+    public getCpf(): string {
+        return this.cpf
+    }
+}
+
+class Banco {
+    
+    private contas: Conta[]
+
+    constructor() {
+        this.contas = []
+    }
+
+    
+    private consultarPorIndice(numero: string): number {
+        for (let i = 0; i < this.contas.length; i++) {
+            if (this.contas[i].getNumero() === numero) {
+                return i
+            }
+        }
+        return -1
+    }
+
+
+    public inserir(conta: Conta): void {
+        this.contas.push(conta)
+    }
+
+    
+    public consultar(numero: string): Conta | null {
+        const indice = this.consultarPorIndice(numero)
+        if (indice !== -1) {
+            return this.contas[indice]
+        } else {
+            return null
+        }
+    }
+
+    
+    public excluir(numero: string): void {
+        const indice = this.consultarPorIndice(numero)
+        if (indice !== -1) {
+            this.contas.splice(indice, 1)
+            console.log(`Conta ${numero} excluída com sucesso.`)
+        } else {
+            console.log(`Conta ${numero} não encontrada.`)
+        }
+    }
+
+    
+    public listarContas(): void {
+        console.log("Lista de Contas:")
+        this.contas.forEach((conta, i) => {
+            console.log(`${i + 1}. Número: ${conta.getNumero()} | Saldo: R$ ${conta.getSaldo()}`)
+        })
+    }
+}
+
+
+const cliente1 = new Cliente("João Silva", "123.456.789-00")
+const cliente2 = new Cliente("Maria Oliveira", "987.654.321-00")
+
+
+const conta1 = new Conta("001", 1000)
+const conta2 = new Conta("002", 2000)
+
+
+const banco = new Banco()
+
+
+banco.inserir(conta1)
+banco.inserir(conta2)
+
+
+banco.listarContas();
+
+
+const contaConsultada = banco.consultar("002")
+if (contaConsultada) {
+    console.log(`Conta consultada: Número: ${contaConsultada.getNumero()}, Saldo: R$ ${contaConsultada.getSaldo()}`)
+}
+
+
+conta1.depositar(500)
+console.log(`Novo saldo da conta 001: R$ ${conta1.getSaldo()}`)
+
+conta2.sacar(1000)
+console.log(`Novo saldo da conta 002: R$ ${conta2.getSaldo()}`)
+
+
+banco.excluir("001")
+banco.listarContas()
