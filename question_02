@@ -1,0 +1,44 @@
+class Hora {
+    
+    private hora: number
+    private minutos: number
+    private segundos: number
+
+    
+    constructor(hora: number, minutos: number, segundos: number) {
+        this.hora = hora
+        this.minutos = minutos
+        this.segundos = segundos
+    }
+
+    
+    public lerHora(): number {
+        return this.hora
+    }
+
+    
+    public lerMinutos(): number {
+        return this.minutos
+    }
+
+    
+    public lerSegundos(): number {
+        return this.segundos
+    }
+
+    
+    public formatarHora(): string {
+        const hh = this.hora.toString().padStart(2, "0")
+        const mm = this.minutos.toString().padStart(2, "0")
+        const ss = this.segundos.toString().padStart(2, "0")
+        return `${hh}:${mm}:${ss}`
+    }
+}
+
+
+const horario = new Hora(9, 5, 3)
+
+console.log("Hora individual:", horario.lerHora())
+console.log("Minutos individuais:", horario.lerMinutos())
+console.log("Segundos individuais:", horario.lerSegundos())
+console.log("Hora formatada:", horario.formatarHora())
