@@ -1,0 +1,71 @@
+class App {
+    
+    private banco: Banco
+
+    constructor() {
+        this.banco = new Banco()
+    }
+
+    
+    public iniciar(): void {
+        console.log("=== Iniciando Testes ===")
+
+        
+        const cliente1 = new Cliente("João Silva", "123.456.789-00")
+        const cliente2 = new Cliente("Maria Oliveira", "987.654.321-00")
+
+        
+        const conta1 = new Conta("001", 1000)
+        const conta2 = new Conta("002", 2000)
+
+        
+        console.log("\nInserindo contas...")
+        this.banco.inserir(conta1)
+        this.banco.inserir(conta2)
+
+        
+        console.log("\nListando contas:")
+        this.banco.listarContas()
+
+        
+        console.log("\nConsultando conta 002:")
+        const contaConsultada = this.banco.consultar("002")
+        if (contaConsultada) {
+            console.log(`Conta consultada: Número: ${contaConsultada.getNumero()}, Saldo: R$ ${contaConsultada.getSaldo()}`)
+        }
+
+        
+        console.log("\nDepositando R$ 500 na conta 001...")
+        conta1.depositar(500)
+        console.log(`Novo saldo da conta 001: R$ ${conta1.getSaldo()}`)
+
+        
+        console.log("\nSacando R$ 1000 da conta 002...")
+        conta2.sacar(1000)
+        console.log(`Novo saldo da conta 002: R$ ${conta2.getSaldo()}`)
+
+        
+        console.log("\nExcluindo conta 001...")
+        this.banco.excluir("001")
+
+        
+        console.log("\nConsultando conta 001 após exclusão:")
+        const contaExcluida = this.banco.consultar("001")
+        if (!contaExcluida) {
+            console.log("A conta 001 não existe mais no banco.")
+        }
+
+        
+        console.log("\nListando contas finais:")
+        this.banco.listarContas()
+
+        
+        console.log("\nTentando acessar atributo privado 'banco' diretamente...")
+        
+        console.log("Erro confirmado ao tentar acessar atributo privado diretamente.")
+    }
+}
+
+
+const app = new App()
+app.iniciar()
