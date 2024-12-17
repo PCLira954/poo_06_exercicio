@@ -1,0 +1,102 @@
+class Conta {
+    constructor(
+        public numero: string,
+        public saldo: number
+    ) {}
+
+    // Método para depositar
+    public depositar(valor: number): void {
+        this.saldo += valor
+    }
+
+    
+    public sacar(valor: number): void {
+        if (valor > this.saldo) {
+            console.log("Saldo insuficiente.")
+        } else {
+            this.saldo -= valor
+        }
+    }
+}
+
+class Banco {
+    
+    private contas: Conta[]
+
+    constructor() {
+        this.contas = []
+    }
+
+    
+    private consultarPorIndice(numero: string): number {
+        for (let i = 0; i < this.contas.length; i++) {
+            if (this.contas[i].numero === numero) {
+                return i
+            }
+        }
+        return -1
+    }
+
+    
+    public inserir(conta: Conta): void {
+        this.contas.push(conta)
+    }
+
+    
+    public consultar(numero: string): Conta | null {
+        const indice = this.consultarPorIndice(numero)
+        if (indice !== -1) {
+            return this.contas[indice]
+        } else {
+            return null
+        }
+    }
+
+    
+    public excluir(numero: string): void {
+        const indice = this.consultarPorIndice(numero)
+        if (indice !== -1) {
+            this.contas.splice(indice, 1)
+            console.log(`Conta ${numero} excluída com sucesso.`)
+        } else {
+            console.log(`Conta ${numero} não encontrada.`)
+        }
+    }
+
+    
+    public listarContas(): void {
+        console.log("Lista de Contas:")
+        this.contas.forEach((conta, i) => {
+            console.log(`${i + 1}. Número: ${conta.numero} | Saldo: R$ ${conta.saldo}`)
+        })
+    }
+}
+
+
+const banco = new Banco()
+
+
+banco.inserir(new Conta("001", 1000))
+banco.inserir(new Conta("002", 2000))
+banco.inserir(new Conta("003", 1500))
+
+
+banco.listarContas()
+
+
+const contaConsultada = banco.consultar("002")
+if (contaConsultada) {
+    console.log(`Conta consultada: Número: ${contaConsultada.numero}, Saldo: R$ ${contaConsultada.saldo}`)
+}
+
+
+banco.excluir("002")
+
+
+const contaExcluida = banco.consultar("002")
+if (!contaExcluida) {
+    console.log("A conta 002 não existe mais no banco.")
+}
+
+
+banco.listarContas()
